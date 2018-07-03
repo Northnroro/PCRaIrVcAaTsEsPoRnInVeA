@@ -22,7 +22,7 @@ class Game extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="Game">
 				<GameUI game={this.state} />
 			</div>
 		);
