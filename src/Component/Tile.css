@@ -1,0 +1,7 @@
+.Tile{
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	line-height: 0;
+	border: 1px solid black;
+}
