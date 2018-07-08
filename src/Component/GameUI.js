@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import './GameUI.css';
 import Board from './Board';
 import Info from './Info';
+import Tile from './Tile';
 
 class GameUI extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			translate:{y:50, x:100},
+			translate:{y:0, x:0},
 			scale:1.00,
+			mousePos: {y:0, x:0}
 		};
 
 		this.isMouseDown = false;
@@ -20,13 +22,23 @@ class GameUI extends Component {
 		this.onWheel = this.onWheel.bind(this);
 	}
 
+	componentDidMount(){
+		this.setState({
+			translate:{y:this.boardDiv.clientHeight/2-75, x:this.boardDiv.clientWidth/2-75}
+		});
+	}
+
 	onMouseDown(e){
-		this.isMouseDown = true;
-		this.prevMousePos = {y:e.clientY, x:e.clientX};
+		if(e.button == 0){
+			this.isMouseDown = true;
+			this.prevMousePos = {y:e.clientY, x:e.clientX};
+		}
 	}
 
 	onMouseUp(e){
-		this.isMouseDown = false;
+		if(e.button == 0){
+			this.isMouseDown = false;
+		}
 	}
 
 	onMouseMove(e){
@@ -41,6 +53,7 @@ class GameUI extends Component {
 			}});
 			this.prevMousePos = {y:e.clientY, x:e.clientX};
 		}
+		this.setState({mousePos:{y:e.clientY, x:e.clientX}});
 	}
 
 	onWheel(e){
@@ -78,16 +91,29 @@ class GameUI extends Component {
 		}
 	}
 
+	onContextMenu(e){
+		e.preventDefault();
+	}
+
 	render() {
 		return (
 			<div>
 				<div className="Board" onMouseDown={this.onMouseDown}
 				onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove}
-				onWheel={this.onWheel} ref={(e)=>{this.boardDiv = e;}} >
+				onWheel={this.onWheel} ref={(e)=>this.boardDiv = e}
+				onContextMenu={this.onContextMenu} >
 					<Board board={this.props.game.board}
 						translate={this.state.translate}
-						scale={this.state.scale} />
+						scale={this.state.scale}
+						isYourTurn={this.props.isYourTurn} />
 				</div>
+				{this.props.isYourTurn && (<div style={{
+					top: this.state.mousePos.y-75*this.state.scale+"px",
+					left: this.state.mousePos.x-75*this.state.scale+"px",
+					transform: "scale("+this.state.scale+")",
+					pointerEvents: "none",
+					position: "absolute"
+				}}> <Tile cells={this.props.game.nextTile} y={0} x={0} /> </div>) }
 				<div className="Info">
 					<Info/>
 				</div>

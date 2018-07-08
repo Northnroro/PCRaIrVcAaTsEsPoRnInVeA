@@ -16,14 +16,31 @@ class Game extends Component {
 						[G,G,G]
 					]
 				}
-			}
+			},
+			players: [
+				{name: 'Northnroro', score: 0, you: true},
+				{name: 'Dummy', score: 10}
+			],
+			turn: 0,
+			nextTile: [
+				[G,P,G],
+				[P,P,P],
+				[G,T,G]
+			]
 		}; // (board.y.x)[y'][x']
+
+		this.isYourTurn = this.isYourTurn.bind(this);
+
+	}
+
+	isYourTurn(){
+		return this.state.players[this.state.turn].you;
 	}
 
 	render() {
 		return (
 			<div className="Game">
-				<GameUI game={this.state} />
+				<GameUI game={this.state} isYourTurn={this.isYourTurn()} />
 			</div>
 		);
 	}

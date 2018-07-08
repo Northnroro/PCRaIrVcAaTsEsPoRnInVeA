@@ -9,12 +9,15 @@ class Board extends Component {
 		this.state = {};
 	}
 
-	renderTile(){
+	renderTile(isYourTurn){
 		var tiles = [];
 		for(var y in this.props.board){
 			for(var x in this.props.board[y]){
 				tiles.push(<Tile cells={this.props.board[y][x]} y={y} x={x} />);
 			}
+		}
+		if(isYourTurn){
+			
 		}
 		return tiles;
 	}
@@ -26,7 +29,7 @@ class Board extends Component {
 				left: this.props.translate.x+"px",
 				transform: "scale("+this.props.scale+")"
 			}} >
-				{this.renderTile()}
+				{this.renderTile(this.props.isYourTurn)}
 			</div>
 		);
 	}
