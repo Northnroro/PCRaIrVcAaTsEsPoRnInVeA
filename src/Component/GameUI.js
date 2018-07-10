@@ -73,8 +73,8 @@ class GameUI extends Component {
 		var prevY = this.state.translate.y;
 		var prevX = this.state.translate.x;
 		var prevScale = this.state.scale;
-		const step = 50;
-		const stepTime = 4;
+		const step = 7;
+		const stepTime = 30;
 		for(var i=1; i<=step; i++){
 			this.stepIntervals.push(setTimeout((function(i){
 				this.setState({
